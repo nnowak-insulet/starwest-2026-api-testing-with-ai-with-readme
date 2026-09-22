@@ -1,0 +1,25 @@
+{
+  "name": "starwest-2026-api-testing-with-ai",
+  "version": "1.0.0",
+  "description": "E-commerce REST API with JWT authentication and checkout",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "keywords": [
+    "express",
+    "jwt",
+    "ecommerce",
+    "api"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
+  }
+}
