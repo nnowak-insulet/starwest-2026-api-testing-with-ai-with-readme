@@ -4,3 +4,7 @@ node_modules/
 npm-debug.log*
 mochawesome-report/
 .mocha/
+test/jmeterTesting/results/
+jmeter.log
+*.jtl
+
