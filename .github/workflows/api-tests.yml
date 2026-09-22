@@ -1,0 +1,58 @@
+name: API Test Automation
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  api-tests:
+    name: Run Path Coverage Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Start API in background
+        run: |
+          npm start &
+          echo $! > api.pid
+
+      - name: Wait until the API is running
+        run: |
+          echo "Waiting for API healthcheck..."
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3000/healthcheck > /dev/null; then
+              echo "API is healthy"
+              curl -s http://localhost:3000/healthcheck
+              exit 0
+            fi
+            echo "Attempt $i/30 - API not ready yet"
+            sleep 2
+          done
+          echo "API failed to become healthy in time"
+          exit 1
+
+      - name: Run test scripts
+        run: npm test
+
+      - name: Upload Mochawesome report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mochawesome-report
+          path: mochawesome-report/
+          if-no-files-found: ignore
